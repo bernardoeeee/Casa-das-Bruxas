@@ -2,9 +2,11 @@
 
 <h2>Tabelas do MySQL</h2>
 
+
+````
 CREATE DATABASE CasaDasBruxas;
 USE CasaDasBruxas;
-
+````
 CREATE TABLE cadastro (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     DataNascimento DATE NOT NULL,
