@@ -7,6 +7,9 @@
 CREATE DATABASE CasaDasBruxas;
 USE CasaDasBruxas;
 ````
+<h2>Aqui é feito a tabela de cadastro</h2>
+
+````
 CREATE TABLE cadastro (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     DataNascimento DATE NOT NULL,
@@ -14,16 +17,24 @@ CREATE TABLE cadastro (
     NomeCompleto VARCHAR(255) NOT NULL,
     senha VARCHAR(255) NOT NULL UNIQUE
 );
-### Armazena as informações dos usuários cadastrados na plataforma. Cada user possui um "id_usuario", "DataNascimento", "email", "NomeCompleto" e "senha". Os e-mails e as senhas são únicos, para não ter contas iguais.
+````
+<h3>Armazena as informações dos usuários cadastrados na plataforma. Cada user possui um "id_usuario", "DataNascimento", "email", "NomeCompleto" e "senha". Os e-mails e as senhas são únicos, para não ter contas iguais.</h3>
 
+<h2>Aqui é feito a tabela de produtos</h2>
+
+````
 CREATE TABLE produtos (
     id_produto INT AUTO_INCREMENT PRIMARY KEY,
     nomeProduto VARCHAR(255) NOT NULL UNIQUE,
     preco FLOAT,
     descricao VARCHAR(1000) NOT NULL
 );
-### Tem os itens para comprar na plataforma. Cada produto tem um "id_produto", um "nomeProduto", um "preco", e uma "descricao" sobre o item. O nome do produto é único para não ter duplicados.
+````
+<h3>Tem os itens para comprar na plataforma. Cada produto tem um "id_produto", um "nomeProduto", um "preco", e uma "descricao" sobre o item. O nome do produto é único para não ter duplicados.</h3>
 
+<h2>Aqui é feito a tabela de carrinho</h2>
+
+````
 CREATE TABLE carrinho (
     preco_total FLOAT,
     id_produto INT,
@@ -32,34 +43,41 @@ CREATE TABLE carrinho (
     FOREIGN KEY (id_produto) REFERENCES produtos(id_produto),
     FOREIGN KEY (id_usuario) REFERENCES cadastro(id_usuario)
 );
-### Adiciona produtos aos usuários, mostrando os itens que cada usuário adicionou ao carrinho de compras. Inclui o "preco_total" dos produtos no carrinho, e também chaves estrangeiras (id_produto e id_usuario) para os produtos e usuários correspondentes.
+````
+<h3>Adiciona produtos aos usuários, mostrando os itens que cada usuário adicionou ao carrinho de compras. Inclui o "preco_total" dos produtos no carrinho, e também chaves estrangeiras (id_produto e id_usuario) para os produtos e usuários correspondentes.</h3>
 
+<h2>Aqui é feito a tabela de login</h2>
+
+````
 CREATE TABLE loggin (
     email VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL UNIQUE,
     FOREIGN KEY (email) REFERENCES cadastro(email),
     FOREIGN KEY (senha) REFERENCES cadastro(senha)
 );
+````
+<h3>Armazena os dados de login dos usuários, somente os campos email e senha. As duas colunas são únicas e têm restrições de chave estrangeira para garantir que o e-mail e a senha sejam iguais às informações armazenadas na tabela cadastro, sendo mais seguro para o login.</h3>
 
-### Armazena os dados de login dos usuários, somente os campos email e senha. As duas colunas são únicas e têm restrições de chave estrangeira para garantir que o e-mail e a senha sejam iguais às informações armazenadas na tabela cadastro, sendo mais seguro para o login.
+<h2>Inserir dados para teste:</h2>
 
-## Inserir dados para teste:
-
+````
 INSERT INTO cadastro (DataNascimento, email, NomeCompleto, senha) VALUES ("2004-07-05", "bvfgecn@gmail.com", "Bernardo Varisco", "11445577");
 
 INSERT INTO produtos (nomeProduto, preco, descricao) VALUES ("VenenoDeAranha", 68.00, "Veneno letal extraído de aranhas raras.");
 
 INSERT INTO loggin(email, senha) VALUES();
+````
+<h2>Configuração do Servidor Node.js</h2>
 
-# Configuração do Servidor Node.js
-## Instalação:
+<h2>Instalação</h2>
 Abra o Git Bash na área de trabalho e abra com "cd -nome da pasta-" a pasta do seu trabalho;
 Após isso execute o comando "npm init -y". O comando npm init -y é usado no Node.js para inicializar um novo projeto Node.js com um arquivo package.json padrão.
 Após isso execute as instalações : "npm i express nodemon cors mysql2". Express facilita o gerenciamento das rotas,  o nodemon monitora as mudanças nos arquivos do projeto e reinicia automaticamente o servidor sempre que uma alteração é detectada, o pacote cors permite configurar e gerenciar essa política, e o MySQL é um cliente para Node.js, compatível com o mysql banco de dados.
 
-# Configurar a conexão com o banco de dados:
-### Crie um arquivo com o nome "db_config.js" e nele aplique este codigo:
+<h2>Configurar a conexão com o banco de dados:</h2>
+<h3>Crie um arquivo com o nome "db_config.js" e nele aplique este codigo:</h3>
 
+````
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
@@ -75,16 +93,17 @@ connection.connect((err) => {
 });
 
 module.exports = connection;
+````
 
-
-# Rodar no servidor:
+<h2>Rodar no servidor:</h2>
 No terminal aplique:
-### npm start
+"npm start"
 O servidor deve iniciar na porta escolhida(3002) com o Mysql conectado.
 
-# Criando um JS para as rotas:
-## Crie um arquivo "server.js"
+<h3>Criando um JS para as rotas:</h3>
+<h2>Crie um arquivo "server.js"</h2>
 
+````
 const express = require('express');
 const cors = require('cors');
 //definir a porta
@@ -98,8 +117,10 @@ app.listen(porta, () => console.log(`rodando na porta` + porta));
 
 const connection = require('./db_config.js');
 
-### Aplique as rotas
+````
+<h3>Aplique as rotas</h3>
 
+````
 // O POST é utilizada para enviar dados ao servidor.
 app.post('/cadastro/cadastrar', (request, response) => {
 // criar um array com dados recebidos
@@ -132,13 +153,15 @@ connection.query(query, params, (err, results) => {
         }
     })
 });
+````
+<h3>Testar as API's:</h3>
+<h2>adastro do usuario:</h2>
 
-# Testar as API's:
-## Cadastro do usuario:
+Para testarmos se as rotas estão realmente funcionando nós devemos abrir um novo local no ThunderClient onde lá vamos por http://localhost:3002/cadastro/cadastrar com a mesma porta que registramos no inicio e as mesmas informaçoes do POST.
 
-//-para testarmos se as rotas estão realmente funcionando nós devemos abrir um novo local no ThunderClient onde lá vamos por http://localhost:3002/cadastro/cadastrar com a mesma porta que registramos no inicio e as mesmas informaçoes do POST.-\\
-Para registrar informaçoes no ThunderClient fazemos da seguintes forma:
+<h2>Para registrar informaçoes no ThunderClient fazemos da seguintes forma:</h2>
 
+````
 - POST|http://localhost:3002/cadastro/cadastrar
 
 - Body: 
@@ -149,9 +172,10 @@ Para registrar informaçoes no ThunderClient fazemos da seguintes forma:
 "nomeCompleto": "Nome Teste",
 "senha": "123456"
 }
+````
 
 Após isto vamos no banco e dados e colocamos este código para visualizar o que acabamos de registrar:
 
-SELECT * FROM cadastro;
+"SELECT * FROM cadastro"
 
-### TUDO ISTO DEVE ESTAR DE ACORDO COM O NOSSO BANCO DE DADOS QUE JA HAVIAMOS CRIADO NO MYSQL WORKBENCH.
+<h2>TUDO ISTO DEVE ESTAR DE ACORDO COM O NOSSO BANCO DE DADOS QUE JA HAVIAMOS CRIADO NO MYSQL WORKBENCH.</h2>
